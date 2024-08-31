@@ -1,12 +1,3 @@
-:root {
-  --card-color-red: red;
-  --card-color-black: black;
-  --card-color-base: white;
-
-  --card-width: 4em;
-  --card-aspect-ratio: calc(2.5 / 3.5);
-}
-
 body {
   margin: 0;
   padding: 0;
@@ -20,182 +11,209 @@ body {
 }
 
 #poker-game {
-  display: grid;
-  grid-template: 1fr 1fr 1fr / 1fr 1fr 1fr 1fr;
-  gap: 2px;
-  padding: 0.5%;
-  box-sizing: border-box;
-  overflow: hidden;
+  overflow: scroll;
+  & > *:nth-child(1) {
+    display: grid;
+    grid-template: 1fr 1fr 1fr / 1fr 1fr 1fr 1fr;
+    gap: 2px;
+    padding: 0.5%;
+    box-sizing: border-box;
+    overflow: hidden;
+    width: -moz-fit-content;
+    width: fit-content;
 
-  border-radius: 10%;
-  background-color: brown;
-  border: 4px solid #fff8;
+    border-radius: 10%;
+    background-color: brown;
+    border: 4px solid #fff8;
 
-  & > * {
-    background-color: green;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    flex-direction: column;
-    border-radius: 8px;
-    height: 16em;
+    & > * {
+      background-color: green;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      flex-direction: column;
+      border-radius: 8px;
+      height: 16em;
 
-    &:nth-child(1) /* Board */ {
-      grid-column: 2 / span 2;
-      grid-row: 2 / span 1;
+      &:nth-child(1) /* Board */ {
+        grid-column: 2 / span 2;
+        grid-row: 2 / span 1;
 
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 1em;
-      justify-items: center;
-      &::before,
-      &::after {
-        content: "";
-        height: 80%;
-        width: 1em;
-        background: linear-gradient(99deg, brown, darkred, brown);
-        border-radius: 1em;
+        display: grid;
+        grid-template: 1fr 99fr / repeat(7, 1fr);
+        gap: 1em;
+        justify-items: center;
+
+        & > * {
+          &:nth-child(1) {
+            grid-column: span 3;
+          }
+          &:nth-child(n + 2):nth-child(-n + 3) {
+            grid-column: span 1;
+            margin: 0;
+            width: 100%;
+          }
+        }
+        &::before,
+        &::after {
+          content: "";
+          height: 80%;
+          width: 1em;
+          grid-row: 1 / -1;
+          grid-column: 1 / span 1;
+          background: linear-gradient(99deg, brown, darkred, brown);
+          border-radius: 1em;
+        }
+        &::after {
+          grid-column: -2 / span 1;
+        }
       }
-    }
 
-    &:nth-child(2) /* Player 1 */ {
-      grid-column: 2 / span 2;
-      grid-row: 3 / span 1;
-      aspect-ratio: unset;
+      &:nth-child(2) /* Player 1 */ {
+        grid-column: 2 / span 2;
+        grid-row: 3 / span 1;
+        aspect-ratio: unset;
 
-      display: grid;
-      --grid-width: 7;
-      --grid-height: 3;
-      grid-template-columns: 1fr auto repeat(calc(var(--grid-width) - 2), 1fr);
-      grid-template-rows: repeat(var(--grid-height), 1fr);
-      gap: 1%;
+        display: grid;
+        --grid-width: 7;
+        --grid-height: 3;
+        grid-template-columns: 1fr auto repeat(calc(var(--grid-width) - 2), 1fr);
+        grid-template-rows: repeat(var(--grid-height), 1fr);
+        gap: 1%;
 
-      &::before {
-        content: "";
-        grid-column: 1 / span 1;
-        grid-row: 1 / span 3;
+        &::before {
+          content: "";
+          grid-column: 1 / span 1;
+          grid-row: 1 / span 3;
+        }
+
+        & .hand {
+          grid-column: 2 / span 1;
+          grid-row: 1 / span 3;
+        }
+
+        &[playing] .hand {
+          margin-bottom: 5em;
+        }
+      }
+
+      &:nth-child(n+3) /* Player >1 */ {
+        width: 16em;
+      }
+
+      &:nth-child(3) /* Player 2 */ {
+        grid-row: 3 / span 1;
+      }
+
+      &:nth-child(4) /* Player 3 */ {
+        grid-row: 2 / span 1;
+      }
+
+      &:nth-child(n + 11) /* Players Overflow */ {
+        display: none;
       }
 
       & .hand {
-        grid-column: 2 / span 1;
-        grid-row: 1 / span 3;
-      }
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.1em;
 
-      &[playing] .hand {
-        transform: translateY(-3em);
-      }
-    }
+        border-radius: 1em;
+        padding: 0em 2em;
+        background: linear-gradient(90deg, #0002, transparent 20%, transparent 80%, #0002);
+        border-top: 0.5em solid #f882;
 
-    &:nth-child(n+3) /* Player >1 */ {
-      aspect-ratio: var(--poker-table-aspect-ratio);
-    }
+        --peek: 1em;
+        margin-top: calc(+1 * var(--peek));
+        transition: margin 0.4s ease-in-out;
 
-    &:nth-child(3) /* Player 2 */ {
-      grid-row: 3 / span 1;
-    }
+        & > .card {
+          margin-top: calc(-1 * var(--peek));
+          transition: margin 0.3s ease-in-out;
 
-    &:nth-child(4) /* Player 3 */ {
-      grid-row: 2 / span 1;
-    }
+          &:nth-of-type(1) {
+            transform: rotate(-8deg);
+            margin-bottom: .5em;
+            margin-left: +8%;
+          }
 
-    &:nth-child(n + 11) /* Players Overflow */ {
-      display: none;
-    }
-
-    & .hand {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.1em;
-
-      border-radius: 1em;
-      padding: 0em 2em;
-      background: linear-gradient(90deg, #0002, transparent 20%, transparent 80%, #0002);
-      border-top: 0.5em solid #f882;
-
-      --peek: 5em;
-      margin-top: calc(+1 * var(--peek));
-      transition: margin-top 0.3s ease-in-out;
-
-      & > .card {
-        margin-top: calc(-1 * var(--peek));
-        margin-bottom: 1em;
-        transition: margin-top 0.4s ease-in-out;
-
-        &:nth-of-type(1) {
-          transform: rotate(-5deg);
-          margin-left: +0.5em;
+          &:nth-of-type(2) {
+            transform: rotate(+12deg);
+            margin-bottom: .5em;
+            margin-left: -8%;
+          }
         }
 
-        &:nth-of-type(2) {
-          transform: rotate(+10deg);
-          margin-left: -0.5em;
-        }
-      }
-
-      & > b {
-        text-align: right;
-        &:nth-of-type(1) {
+        & > b:nth-of-type(1) {
           text-align: center;
           grid-column: span 2;
           font-size: large;
-          background: linear-gradient(transparent, #fff2);
+          background: linear-gradient(transparent, #0ff8);
           border-radius: 1em;
-          border-bottom: 0.1em solid #fff8;
-          margin-bottom: 0.1em;
+          margin: 0.1em auto;
+          padding: 1% 10%;
+        }
+
+        & > p {
+          margin: 0;
         }
       }
 
-      & > p {
-        margin: 0;
+      &[playing] .hand {
+        background: linear-gradient(90deg, #fff8, transparent 20%, transparent 80%, #fff8);
+        --peek: 5em;
       }
     }
 
-    &[playing] .hand {
-      background: linear-gradient(90deg, #fff8, transparent 20%, transparent 80%, #fff8);
-      --peek: 3em;
+    & .card {
+      font-size: x-large;
+    }
+
+    & b {
+      text-align: right;
     }
   }
 
   & .card {
     display: grid;
-
     grid-template: 1fr 1fr / 1fr;
-    gap: 0;
 
-    width: var(--card-width);
-    aspect-ratio: var(--card-aspect-ratio);
+    width: 2.5em;
+    height: 3.5em;
     box-sizing: border-box;
 
-    background-color: white;
-    border-radius: calc(var(--card-width) * 0.05);
-    box-shadow: 0.2em 0.2em 0.4em #0005;
-    outline: 1px solid #aaa5;
+    background-color: whitesmoke;
+    border-radius: 0.2em;
+    box-shadow: 0.2em 0.2em 0.4em #0004;
+    outline: 1px solid #aaa4;
 
-    color: var(--card-color-black);
     &[suit="♦"],
     &[suit="♥"] {
-      color: var(--card-color-red);
+      color: red;
     }
 
     &::before,
     &::after {
-      font-size: calc(var(--card-width) * 0.68);
       font-family: "Georgia", serif;
       text-align: center;
+      font-size: 180%;
     }
 
     &::before {
       content: attr(rank);
-      margin-left: 0.4em;
-    }
-    &[rank="X"]::before {
-      content: "10";
-      margin-left: 0;
+      margin-left: 25%;
+      margin-top: -5%;
     }
     &::after {
       content: attr(suit);
-      margin-top: -0.3em;
-      margin-left: -0.4em;
+      margin-left: -25%;
+      margin-top: -25%;
+      font-size: 220%;
+    }
+
+    &[rank="X"]::before {
+      content: "10";
+      margin-left: 0;
     }
 
     &:hover,
