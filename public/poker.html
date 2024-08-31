@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Poker</title>
+    <link rel="stylesheet" href="poker.css" />
+    <script type="module" src="poker.mjs"></script>
+  </head>
+  <body>
+    <main id="poker-game">
+      <div></div>
+      <div>
+        <div class="hand">
+          <b>Player Name</b>
+          <b> Bet :</b>
+          <p>123</p>
+          <b>Bank :</b>
+          <p>456</p>
+        </div>
+        <div>This</div>
+        <div>Is</div>
+        <div>The</div>
+        <div>Player</div>
+      </div>
+      <div>
+        <script>
+          const seat = document.currentScript.parentElement
+          seat.replaceChildren(seat.parentElement.querySelector(".hand").cloneNode(true))
+          seat.parentElement.append(
+            ...Array.from({ length: 10 - seat.parentElement.children.length }, _ => seat.cloneNode(true))
+          )
+        </script>
+      </div>
+    </main>
+    <script>
+      const ranks = Array.from("A23456789XJQK")
+      const suits = Array.from("♣♦♥♠")
+      const randI = ({ length }) => Math.floor(Math.random() * length)
+      const randCard = () => `${ranks[randI(ranks)]}${suits[randI(suits)]}`
+      const divCard = str => {
+        const card = document.createElement("div")
+        card.classList.add("card")
+        card.setAttribute("title", str ?? randCard())
+        card.setAttribute("rank", card.title[0])
+        card.setAttribute("suit", card.title[1])
+        return card
+      }
+      const table = document.querySelector("#poker-game")
+      table.children[0].append(...Array.from({ length: 5 }, divCard))
+      let i = 0
+      for (const hand of table.querySelectorAll(".hand")) {
+        hand.replaceChildren(divCard(), divCard(), ...hand.children)
+        hand.children[2].innerHTML = `Player ${++i}`
+      }
+      setInterval(() => {
+        const seats = [...table.children].splice(1)
+        const i = seats.findIndex(s => s.hasAttribute("playing"))
+        seats.at((i + 0) % seats.length).toggleAttribute("playing", false)
+        seats.at((i + 1) % seats.length).toggleAttribute("playing", true)
+      }, 2000)
+    </script>
+  </body>
+</html>
