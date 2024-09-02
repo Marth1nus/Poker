@@ -7,73 +7,134 @@
     <link rel="stylesheet" href="poker.css" />
     <script type="module" src="poker.mjs"></script>
     <script>
-      const ranks = Array.from("A23456789XJQK")
-      const suits = Array.from("♣♦♥♠")
-      const randI = ({ length }) => Math.floor(Math.random() * length)
-      const randCard = () => `${ranks[randI(ranks)]}${suits[randI(suits)]}`
-      const divCard = str => {
-        const card = document.createElement("div")
-        card.classList.add("card")
-        card.setAttribute("title", str ?? randCard())
-        card.setAttribute("rank", card.title[0])
-        card.setAttribute("suit", card.title[1])
-        return card
-      }
-      const replaceHere = (...nodes) => {
-        if (nodes.length < 1) nodes.push(document.createElement("div"))
-        document.currentScript.replaceWith(...nodes)
-        return nodes
-      }
-      const seatsHere = (n = 1) => {
-        const hand = document.querySelector(".hand")
-        replaceHere(...Array.from({ length: n }, _ => hand.parentNode.cloneNode())).forEach(seat =>
-          seat.replaceChildren(hand.cloneNode(true))
-        )
-      }
-      document.addEventListener("DOMContentLoaded", event => {
-        const table = document.querySelector("#poker-game > *:nth-child(1)")
-        ;[...document.querySelectorAll(".hand")].forEach((hand, i) => {
-          hand.children[0].replaceWith(divCard())
-          hand.children[1].replaceWith(divCard())
-          hand.children[2].innerHTML = `Player ${i + 1}`
-        })
-        setInterval(() => {
-          const seats = [...table.children].splice(1)
-          const i = seats.findIndex(s => s.hasAttribute("playing"))
-          seats.at((i + 0) % seats.length).toggleAttribute("playing", false)
-          seats.at((i + 1) % seats.length).toggleAttribute("playing", true)
-        }, 2000)
-      })
+      let playingInterval = setInterval(() => {
+        const seats = [...document.querySelectorAll(".table > .seat")]
+        const i = seats.findIndex(s => s.classList.contains("playing"))
+        seats.at((i + 0) % seats.length).classList.toggle("playing", false)
+        seats.at((i + 1) % seats.length).classList.toggle("playing", true)
+        if (i === seats.length - 1) clearInterval(playingInterval)
+      }, 1000)
     </script>
   </head>
   <body>
-    <main id="poker-game">
-      <div>
-        <div>
+    <div id="poker-game">
+      <div class="table">
+        <div class="board">
           <h1>Board</h1>
-          <b>Pot :</b>
-          <p>9999</p>
+          <b>Pot</b>
+          <p>100</p>
           <div class="card"></div>
           <div class="card"></div>
           <div class="card"></div>
           <div class="card"></div>
           <div class="card"></div>
         </div>
-        <div>
+        <div class="seat player playing">
+          <div class="hand">
+            <div class="card" data-rank="X" data-suit="♥"></div>
+            <div class="card" data-rank="A" data-suit="♠"></div>
+            <b>Player 1</b>
+            <b>Bet</b>
+            <p>100</p>
+            <b>Bank</b>
+            <p>1000</p>
+          </div>
+          <form title="player move">
+            <input type="submit" name="action" value="Fold" title="Fold" />
+            <input type="submit" name="action" value="Call" title="Call" />
+            <input type="submit" name="action" value="Raise" title="Raise" />
+            <input type="text" name="raiseTo" value="100" title="Raise To" pattern="\d*" />
+          </form>
+        </div>
+        <div class="seat">
           <div class="hand">
             <div class="card"></div>
             <div class="card"></div>
-            <b>Player Name</b>
-            <b> Bet :</b>
-            <p>123</p>
-            <b>Bank :</b>
-            <p>456</p>
+            <b>Player 2</b>
+            <b>Bet</b>
+            <p>100</p>
+            <b>Bank</b>
+            <p>1000</p>
           </div>
         </div>
-        <script>
-          seatsHere(8)
-        </script>
+        <div class="seat">
+          <div class="hand">
+            <div class="card"></div>
+            <div class="card"></div>
+            <b>Player 3</b>
+            <b>Bet</b>
+            <p>100</p>
+            <b>Bank</b>
+            <p>1000</p>
+          </div>
+        </div>
+        <div class="seat">
+          <div class="hand">
+            <div class="card"></div>
+            <div class="card"></div>
+            <b>Player 4</b>
+            <b>Bet</b>
+            <p>100</p>
+            <b>Bank</b>
+            <p>1000</p>
+          </div>
+        </div>
+        <div class="seat">
+          <div class="hand">
+            <div class="card"></div>
+            <div class="card"></div>
+            <b>Player 5</b>
+            <b>Bet</b>
+            <p>100</p>
+            <b>Bank</b>
+            <p>1000</p>
+          </div>
+        </div>
+        <div class="seat">
+          <div class="hand">
+            <div class="card"></div>
+            <div class="card"></div>
+            <b>Player 6</b>
+            <b>Bet</b>
+            <p>100</p>
+            <b>Bank</b>
+            <p>1000</p>
+          </div>
+        </div>
+        <div class="seat">
+          <div class="hand">
+            <div class="card"></div>
+            <div class="card"></div>
+            <b>Player 7</b>
+            <b>Bet</b>
+            <p>100</p>
+            <b>Bank</b>
+            <p>1000</p>
+          </div>
+        </div>
+        <div class="seat">
+          <div class="hand">
+            <div class="card"></div>
+            <div class="card"></div>
+            <b>Player 8</b>
+            <b>Bet</b>
+            <p>100</p>
+            <b>Bank</b>
+            <p>1000</p>
+          </div>
+        </div>
+        <div class="seat">
+          <div class="hand">
+            <div class="card"></div>
+            <div class="card"></div>
+            <b>Player 9</b>
+            <b>Bet</b>
+            <p>100</p>
+            <b>Bank</b>
+            <p>1000</p>
+          </div>
+        </div>
       </div>
-    </main>
+    </div>
   </body>
 </html>

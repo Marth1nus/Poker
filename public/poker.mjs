@@ -1,26 +1,65 @@
-/** {A23456789XJQK}{♣♦♥♠}
+/** Poker Cards {A23456789XJQK}{♣♦♥♠}
  * @typedef {'♣'|'♦'|'♥'|'♠'} suit
  * @typedef {'A'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9'|'X'|'J'|'Q'|'K'} rank
  * @typedef {`${rank}${suit}`} card
- * @typedef {HTMLDivElement} card
+ */
+/** Poker Game Object
+ * @typedef {{pot:number, cards:card[]}} board
+ * @typedef {{id:string, hand:card[], name:string, bet:number, bank:number}} player
  */
 
-/** @type    {rank[]} */ export const ranks = Array.from("A23456789XJQK")
-/** @type    {suit[]} */ export const suits = Array.from("♣♦♥♠")
-/** @returns {card[]} */ export const allCards = () => ranks.flatMap(rank => suits.map(suit => `${rank}${suit}`))
-/** @returns {card[]} */ export const newDeck = () => shuffle(allCards())
+document.addEventListener("DOMContentLoaded", onDOMContentLoaded, { once: true })
 
+/** @param {Event} event  */
+function onDOMContentLoaded(event) {
 
+  /** @type {HTMLFormElement} */
+  const form = document.querySelector("#poker-game .player form")
+  form.addEventListener("submit", onPlayerFormSubmit)
 
-/** Shuffle items in place
- * @template T
- * @param {T[]} items
- * @returns {T[]} items
+}
+
+/** 
+ * @param {SubmitEvent} event
+ * @this {HTMLFormElement}
  */
-export function shuffle(items) {
-  for (let i = items.length - 1; 0 < i; i--) {
-    const j = Math.floor(Math.random() * (i + 1))
-    ;[items[i], items[j]] = [items[j], items[i]]
+async function onPlayerFormSubmit(event) {
+  event.preventDefault()
+
+  /** @type {{action:string, raiseTo:number}} */
+  const formData = Object.fromEntries(new FormData(this).entries()),
+    { action, raiseTo } = formData
+  if (!action) {
+    console.error("No Action", formData)
+    return
   }
-  return items
+
+  const response = await fetch(`/api/{gameId}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ action, raiseTo: action === "Raise" ? raiseTo : undefined }),
+  })
+
+  if (!response.ok) throw new Error(response.statusText)
+
+  /** @type {{prevPlayer:player, currPlayer:player, currBoard:board}} */
+  const { prevPlayer, currPlayer, currBoard } = await response.json()
+
+  // Update player seats
+  for (const player of [prevPlayer, currPlayer]) {
+    /** @type {HTMLElement} */
+    const hand = document.querySelector(`#poker-game .seat[data-playerId="${player.id}"] .hand`)
+    hand.classList.toggle("playing", player === currPlayer)
+
+    /** @type {HTMLElement[]} */
+    const [card0, card1, name, betTitle, bet, bankTitle, bank] = hand.children
+    if (player.hand?.length === 2)
+      [
+        [card0.dataset.rank, card0.dataset.suit], //
+        [card1.dataset.rank, card1.dataset.suit],
+      ] = player.hand
+    name.innerText = player.name
+    bet.innerText = player.bet
+    bank.innerText = player.bank
+  }
 }
