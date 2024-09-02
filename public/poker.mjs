@@ -12,14 +12,12 @@ document.addEventListener("DOMContentLoaded", onDOMContentLoaded, { once: true }
 
 /** @param {Event} event  */
 function onDOMContentLoaded(event) {
-
   /** @type {HTMLFormElement} */
   const form = document.querySelector("#poker-game .player form")
   form.addEventListener("submit", onPlayerFormSubmit)
-
 }
 
-/** 
+/**
  * @param {SubmitEvent} event
  * @this {HTMLFormElement}
  */
@@ -29,8 +27,9 @@ async function onPlayerFormSubmit(event) {
   /** @type {{action:string, raiseTo:number}} */
   const formData = Object.fromEntries(new FormData(this).entries()),
     { action, raiseTo } = formData
+  console.info("Player Input", formData)
   if (!action) {
-    console.error("No Action", formData)
+    console.error("No Action")
     return
   }
 
@@ -40,7 +39,10 @@ async function onPlayerFormSubmit(event) {
     body: JSON.stringify({ action, raiseTo: action === "Raise" ? raiseTo : undefined }),
   })
 
-  if (!response.ok) throw new Error(response.statusText)
+  if (!response.ok) {
+    console.error("Response Fail", response)
+    return
+  }
 
   /** @type {{prevPlayer:player, currPlayer:player, currBoard:board}} */
   const { prevPlayer, currPlayer, currBoard } = await response.json()

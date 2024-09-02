@@ -40,10 +40,21 @@
             <p>1000</p>
           </div>
           <form title="player move">
-            <input type="submit" name="action" value="Fold" title="Fold" />
-            <input type="submit" name="action" value="Call" title="Call" />
-            <input type="submit" name="action" value="Raise" title="Raise" />
+            <input type="hidden" name="action" />
+            <input type="submit" value="Fold" title="Fold" />
+            <input type="submit" value="Call" title="Call" />
+            <input type="submit" value="Raise" title="Raise" />
             <input type="text" name="raiseTo" value="100" title="Raise To" pattern="\d*" />
+            <script title="Link submit button values to action input">
+              ;(() => {
+                const setValue = event =>
+                  (event.target.parentElement.querySelector('input[name="action"]').value = event.target.value)
+                document.currentScript.parentElement
+                  .querySelectorAll('input[type="submit"]')
+                  .forEach(input => input.addEventListener("click", setValue))
+                document.currentScript.replaceWith("")
+              })()
+            </script>
           </form>
         </div>
         <div class="seat">
