@@ -10,19 +10,20 @@ body {
   overflow: scroll;
 
   &::before {
-    content: "";
+    content: '';
     position: absolute;
     width: 100%;
     height: 100%;
     z-index: -1;
     filter: blur(6px);
-    background: url("https://png.pngtree.com/background/20230426/original/pngtree-casino-floor-in-a-cruise-ship-with-roule-tables-picture-image_2482707.jpg");
+    background: url('https://png.pngtree.com/background/20230426/original/pngtree-casino-floor-in-a-cruise-ship-with-roule-tables-picture-image_2482707.jpg');
     background-size: cover;
   }
 }
 
-#poker-game {
+.poker-game {
   overflow: scroll;
+
   & > *:nth-child(1) {
     display: grid;
     grid-template: 1fr 1fr 1fr / 1fr 1fr 1fr 1fr;
@@ -67,7 +68,7 @@ body {
         }
         &::before,
         &::after {
-          content: "";
+          content: '';
           height: 80%;
           width: 1em;
           grid-row: 1 / -1;
@@ -90,7 +91,7 @@ body {
         gap: 1%;
 
         &::before {
-          content: "";
+          content: '';
           grid-column: 1 / span 1;
           grid-row: 1 / -1;
         }
@@ -229,10 +230,10 @@ body {
     & b {
       text-align: right;
       & + p::before {
-        content: ":";
+        content: ':';
       }
       & + p::after {
-        content: "$";
+        content: '$';
       }
     }
   }
@@ -251,14 +252,14 @@ body {
     outline: 1px solid #aaa4;
 
     color: black;
-    &[data-suit="♦"],
-    &[data-suit="♥"] {
+    &[data-suit='♦'],
+    &[data-suit='♥'] {
       color: red;
     }
 
     &::before,
     &::after {
-      font-family: "Georgia", serif;
+      font-family: 'Georgia', serif;
       text-align: center;
       font-size: 180%;
     }
@@ -275,8 +276,8 @@ body {
       font-size: 220%;
     }
 
-    &[data-rank="X"]::before {
-      content: "10";
+    &[data-rank='X']::before {
+      content: '10';
       margin-left: 0;
     }
 
@@ -287,8 +288,8 @@ body {
     }
 
     &:not([data-rank]):not([data-suit]),
-    &[data-rank=" "][data-suit=" "] {
-      background-image: url("playing-card-back.svg");
+    &[data-rank=' '][data-suit=' '] {
+      background-image: url('playing-card-back.svg');
       background-size: 200% 105%;
       background-position: 50%;
       border: none;

@@ -6,18 +6,9 @@
     <title>Poker</title>
     <link rel="stylesheet" href="poker.css" />
     <script type="module" src="poker.mjs"></script>
-    <script>
-      let playingInterval = setInterval(() => {
-        const seats = [...document.querySelectorAll(".table > .seat")]
-        const i = seats.findIndex(s => s.classList.contains("playing"))
-        seats.at((i + 0) % seats.length).classList.toggle("playing", false)
-        seats.at((i + 1) % seats.length).classList.toggle("playing", true)
-        if (i === seats.length - 1) clearInterval(playingInterval)
-      }, 1000)
-    </script>
   </head>
   <body>
-    <div id="poker-game">
+    <div class="poker-game">
       <div class="table">
         <div class="board">
           <h1>Board</h1>
@@ -45,16 +36,6 @@
             <input type="submit" value="Call" title="Call" />
             <input type="submit" value="Raise" title="Raise" />
             <input type="text" name="raiseTo" value="100" title="Raise To" pattern="\d*" />
-            <script title="Link submit button values to action input">
-              ;(() => {
-                const setValue = event =>
-                  (event.target.parentElement.querySelector('input[name="action"]').value = event.target.value)
-                document.currentScript.parentElement
-                  .querySelectorAll('input[type="submit"]')
-                  .forEach(input => input.addEventListener("click", setValue))
-                document.currentScript.replaceWith("")
-              })()
-            </script>
           </form>
         </div>
         <div class="seat">
