@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Poker</title>
+    <link rel="stylesheet" href="poker.css" />
+    <script type="module" src="poker.mjs"></script>
+  </head>
+  <body>
+    <div class="poker-game">
+      <div class="table">
+        <div class="board">
+          <h1>Board</h1>
+          <b>Pot</b>
+          <p>100</p>
+          <div class="card"></div>
+          <div class="card"></div>
+          <div class="card"></div>
+          <div class="card"></div>
+          <div class="card"></div>
+        </div>
+        <div class="seat player playing">
+          <div class="hand">
+            <div class="card" data-rank="X" data-suit="♥"></div>
+            <div class="card" data-rank="A" data-suit="♠"></div>
+            <b>Player 1</b>
+            <b>Bet</b>
+            <p>100</p>
+            <b>Bank</b>
+            <p>1000</p>
+          </div>
+          <form title="player move">
+            <input type="hidden" name="action" />
+            <input type="submit" value="Fold" title="Fold" />
+            <input type="submit" value="Call" title="Call" />
+            <input type="submit" value="Raise" title="Raise" />
+            <input type="text" name="raiseTo" value="100" title="Raise To" pattern="\d*" />
+          </form>
+        </div>
+        <div class="seat">
+          <div class="hand">
+            <div class="card"></div>
+            <div class="card"></div>
+            <b>Player 2</b>
+            <b>Bet</b>
+            <p>100</p>
+            <b>Bank</b>
+            <p>1000</p>
+          </div>
+        </div>
+        <div class="seat">
+          <div class="hand">
+            <div class="card"></div>
+            <div class="card"></div>
+            <b>Player 3</b>
+            <b>Bet</b>
+            <p>100</p>
+            <b>Bank</b>
+            <p>1000</p>
+          </div>
+        </div>
+        <div class="seat">
+          <div class="hand">
+            <div class="card"></div>
+            <div class="card"></div>
+            <b>Player 4</b>
+            <b>Bet</b>
+            <p>100</p>
+            <b>Bank</b>
+            <p>1000</p>
+          </div>
+        </div>
+        <div class="seat">
+          <div class="hand">
+            <div class="card"></div>
+            <div class="card"></div>
+            <b>Player 5</b>
+            <b>Bet</b>
+            <p>100</p>
+            <b>Bank</b>
+            <p>1000</p>
+          </div>
+        </div>
+        <div class="seat">
+          <div class="hand">
+            <div class="card"></div>
+            <div class="card"></div>
+            <b>Player 6</b>
+            <b>Bet</b>
+            <p>100</p>
+            <b>Bank</b>
+            <p>1000</p>
+          </div>
+        </div>
+        <div class="seat">
+          <div class="hand">
+            <div class="card"></div>
+            <div class="card"></div>
+            <b>Player 7</b>
+            <b>Bet</b>
+            <p>100</p>
+            <b>Bank</b>
+            <p>1000</p>
+          </div>
+        </div>
+        <div class="seat">
+          <div class="hand">
+            <div class="card"></div>
+            <div class="card"></div>
+            <b>Player 8</b>
+            <b>Bet</b>
+            <p>100</p>
+            <b>Bank</b>
+            <p>1000</p>
+          </div>
+        </div>
+        <div class="seat">
+          <div class="hand">
+            <div class="card"></div>
+            <div class="card"></div>
+            <b>Player 9</b>
+            <b>Bet</b>
+            <p>100</p>
+            <b>Bank</b>
+            <p>1000</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
